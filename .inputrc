@@ -1,0 +1,9 @@
+# everything in the inputrc file effects the GNU Readline support as well
+
+# set vi mode
+set editing-mode vi
+set keyseq-timeout 50
+set show-mode-in-prompt on
+
+# fix delete key for st
+set enable-keypad on
