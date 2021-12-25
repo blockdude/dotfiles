@@ -56,11 +56,17 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# prompt colors
+PROMPT_PATH_COLOR="2;97m"
+PROMPT_USER_COLOR="0;36m"
+PROMPT_VI_INS_MODE_COLOR="2;91m"
+PROMPT_VI_CMD_MODE_COLOR="0;91m"
+
 if [ "$color_prompt" = yes ]; then
-	PS1='\033[2;97m[\w]\n'
-	EPS='\033[0;36m\1[\u]'
-	INS='\033[2;91m\1$'
-	CMD='\033[0;91m\1$'
+	PS1='\033[$PROMPT_PATH_COLOR[\w]\n'
+	EPS='\033[$PROMPT_USER_COLOR\1[\u]'
+	INS='\033[$PROMPT_VI_INS_MODE_COLOR\1$'
+	CMD='\033[$PROMPT_VI_CMD_MODE_COLOR\1$'
 	reset_readline_prompt_mode_strings () {
 		bind "set vi-ins-mode-string \"${EPS@P}${INS@P}\033[00m\2 \""
 		bind "set vi-cmd-mode-string \"${EPS@P}${CMD@P}\033[00m\2 \""
@@ -78,15 +84,6 @@ else
 	PROMPT_COMMAND=reset_readline_prompt_mode_strings
 fi
 unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -106,6 +103,7 @@ fi
 export EDITOR=vim
 export VISUAL=vim
 alias ls="ls --color=auto -alh --group-directories-first"
+alias exitt="tmux detach -P"
 
 # connect to tmux session when using ssh
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
