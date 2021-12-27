@@ -57,16 +57,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # prompt colors
-PROMPT_PATH_COLOR="2;97m"
-PROMPT_USER_COLOR="0;36m"
-PROMPT_VI_INS_MODE_COLOR="2;91m"
-PROMPT_VI_CMD_MODE_COLOR="0;91m"
+PROMPT_COLOR_PATH="2;97m"
+PROMPT_COLOR_USER="0;36m"
+PROMPT_COLOR_INS="2;91m"
+PROMPT_COLOR_CMD="0;91m"
 
 if [ "$color_prompt" = yes ]; then
-	PS1='\033[$PROMPT_PATH_COLOR[\w]\n'
-	EPS='\033[$PROMPT_USER_COLOR\1[\u]'
-	INS='\033[$PROMPT_VI_INS_MODE_COLOR\1$'
-	CMD='\033[$PROMPT_VI_CMD_MODE_COLOR\1$'
+	PS1='\033[$PROMPT_COLOR_PATH[\w]\n'
+	EPS='\033[$PROMPT_COLOR_USER\1[\u]'
+	INS='\033[$PROMPT_COLOR_INS\1$'
+	CMD='\033[$PROMPT_COLOR_CMD\1$'
 	reset_readline_prompt_mode_strings () {
 		bind "set vi-ins-mode-string \"${EPS@P}${INS@P}\033[00m\2 \""
 		bind "set vi-cmd-mode-string \"${EPS@P}${CMD@P}\033[00m\2 \""
