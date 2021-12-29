@@ -103,11 +103,17 @@ fi
 export EDITOR=vim
 export VISUAL=vim
 alias ls="ls --color=auto -alh --group-directories-first"
-alias exitt="tmux detach -P"
 
 # connect to tmux session when using ssh
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-	  tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+	tmux has-session -t ssh_tmux 2>/dev/null
+	if [ $? != 0 ]; then
+		tmux new-session -d -s ssh_tmux
+		tmux send-keys -t ssh_tmux "alias exit=\"tmux detach -P\"" ENTER
+		tmux send-keys -t ssh_tmux "clear" ENTER
+	fi
+
+	tmux attach-session -t ssh_tmux
 fi
 
 # disable history
