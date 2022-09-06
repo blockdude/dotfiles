@@ -1,9 +1,10 @@
 syntax on
+filetype plugin indent on
 
 " Set tab spacing
-set tabstop=3
-set softtabstop=3
-set shiftwidth=3
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 " Comment line break limit
@@ -32,7 +33,10 @@ set autoindent
 set nowrap
 set incsearch
 
-filetype plugin indent on
+set encoding=utf-8
+set fenc=utf-8
+
+set tabpagemax=100
 
 " fixes visual block insert delay
 set timeoutlen=600
@@ -47,15 +51,24 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'szw/vim-maximizer'
 Plug 'preservim/nerdtree'
 Plug 'vim-scripts/bash-support.vim'
+Plug 'rust-lang/rust.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
+" Set corrent filetypes for c files
+augroup project
+    au!
+    au BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
+
 " Disable auto commenting
 augroup auto_comment
-	au!
-	au FileType * setlocal formatoptions-=rco
-	au FileType c setlocal comments=sl:/*,mb:\ *,elx:\ */ formatoptions+=rco
-	au FileType h setlocal comments=sl:/*,mb:\ *,elx:\ */ formatoptions+=rco
+    au!
+    au FileType * setlocal formatoptions-=rco
+    au FileType c setlocal comments=sl:/*,mb:\ *,elx:\ */ formatoptions+=rco
+    au FileType h setlocal comments=sl:/*,mb:\ *,elx:\ */ formatoptions+=rco
 augroup END
 
 
@@ -90,12 +103,5 @@ nmap <leader>do <Plug>VimspectorStepOut
 nmap <leader>dt <Plug>VimspectorRunToCursor
 nmap <leader>db <Plug>VimspectorToggleBreakpoint
 
-" Sets leader to compile and run programs based on the file extention
-if filereadable("./Makefile")
-	nnoremap <leader>c :make!<CR>
-else
-	autocmd filetype python nnoremap <leader>c :w <bar> exec '!python '.shellescape('%')<CR>
-	autocmd filetype c nnoremap <leader>c :w <bar> exec '!gcc -g '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
-	autocmd filetype cpp nnoremap <leader>c :w <bar> exec '!g++ '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
-	autocmd filetype java nnoremap <leader>c :w <bar> exec '!javac -d out '.shellescape('%').' && java -cp out '.shellescape('%:r')<CR>
-endif
+"fzf
+nnoremap <leader>f :Files<CR>
